@@ -1,0 +1,13 @@
+includes:
+    - ./vendor/phpstan/phpstan-phpunit/extension.neon
+
+parameters:
+    paths:
+        - app
+        - tests
+    level: 5
+    ignoreErrors:
+        - '#Unsafe usage of new static()#'
+    excludePaths:
+        - ./routes/console.php
+    checkMissingIterableValueType: false

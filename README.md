@@ -52,6 +52,32 @@ Para poner en marcha el proyecto localmente, sigue estos pasos:
     npm run dev
     ```
 
+## 🐳 Despliegue con Docker (Recomendado para Testers)
+
+Si tienes Docker instalado, puedes levantar el proyecto sin configurar PHP o MySQL manualmente:
+
+1. **Levantar contenedores**:
+   ```bash
+   ./vendor/bin/sail up -d
+   ```
+2. **Instalar dependencias y migrar** (solo la primera vez):
+   ```bash
+   ./vendor/bin/sail composer install
+   ```
+3. **Migrar base de datos**:
+   ```bash
+   ./vendor/bin/sail artisan migrate --seed
+   ```
+4. **Acceso**: El sistema estará disponible en `http://localhost`.
+
+## 🧪 Pruebas y Calidad
+
+Para asegurar la calidad del código, el proyecto utiliza:
+
+- **PHPUnit**: Para pruebas funcionales. Ejecuta `./vendor/bin/sail test`.
+- **PHPStan**: Análisis estático de errores. Ejecuta `./vendor/bin/sail bin phpstan analyze`.
+- **GitHub Actions**: Cada commit a `main` o `develop` activa automáticamente estas pruebas.
+
 ## 🔑 Credenciales de Acceso
 
 Para acceder al portal administrativo durante el desarrollo, utiliza las siguientes credenciales:

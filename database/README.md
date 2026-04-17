@@ -1,19 +1,27 @@
-# Directorio Database
+# Base de Datos (NCIEPortal)
 
-Gestión de la estructura y datos iniciales de la base de datos.
+Esta carpeta gestiona la persistencia de datos, la estructura de las tablas y el llenado de información inicial mediante herramientas de Laravel.
 
-## 📁 Estructura
+## 📁 Estructura del Directorio
 
-- **`migrations/`**: Archivos que definen la estructura de las tablas. Permiten el control de versiones de la base de datos.
-- **`seeders/`**: Clases para poblar la base de datos con datos de prueba o iniciales (como el usuario administrador por defecto).
-- **`factories/`**: Generadores de datos aleatorios para pruebas.
+| Carpeta | Propósito |
+| :--- | :--- |
+| **migrations/** | Control de versiones de la base de datos. Cada archivo define la creación o modificación de una tabla. |
+| **seeders/** | Clases encargadas de poblar las tablas con datos base (roles, administrador por defecto) o de prueba. |
+| **factories/** | Generadores de datos aleatorios utilizados habitualmente junto con los seeders para pruebas masivas. |
 
-## 🛠 Comandos Útiles
+## 🛠 Comandos de Gestión
 
+Para inicializar la base de datos desde cero, utiliza:
 ```bash
-# Ejecutar migraciones pendientes
-php artisan migrate
-
-# Refrescar base de datos y sembrar datos
 php artisan migrate:fresh --seed
 ```
+
+O para aplicar solo cambios nuevos:
+```bash
+php artisan migrate
+```
+
+## 📝 Notas Adicionales
+- Existe un respaldo físico de la base de datos en la raíz del proyecto: `u868517925_ncie.sql`.
+- El esquema de permisos está integrado dentro de las migraciones y seeders (utilizando el sistema de capacidades de Laravel).
