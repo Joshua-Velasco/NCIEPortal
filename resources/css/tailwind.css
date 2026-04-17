@@ -1,0 +1,7 @@
+/*
+ * Tailwind CSS entry point.
+ * @tailwind base is intentionally omitted — Bootstrap handles the base reset.
+ * Using prefix 'tw-' for all utilities (see tailwind.config.js).
+ */
+@tailwind components;
+@tailwind utilities;

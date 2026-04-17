@@ -155,7 +155,7 @@ class CursoController extends Controller
         // Actualizar los datos del curso
         $curso->update([
             'nombre' => $request->nombre,
-            'feha_inicio' => $request->fecha_inicio,
+            'fecha_inicio' => $request->fecha_inicio,
             'fecha_fin' => $request->fecha_fin,
             'hora_inicio' => $request->hora_inicio,
             'hora_fin' => $request->hora_fin,

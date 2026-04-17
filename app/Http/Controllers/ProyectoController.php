@@ -41,7 +41,7 @@ class ProyectoController extends Controller
 
         if ($request->hasFile('fotos')) {
             $fotoPath = $request->file('fotos');
-            $nombreArchivo = time() . '_' . $fotoPath->getClientOriginalName();
+            $nombreArchivo = $fotoPath->hashName();
             $rutaDestino = public_path('uploads/fotos');
             $fotoPath->move($rutaDestino, $nombreArchivo);
             $proyecto->fotos = 'uploads/fotos/' . $nombreArchivo;
@@ -102,7 +102,7 @@ class ProyectoController extends Controller
 
             // Guardar nueva imagen
             $fotoPath = $request->file('fotos');
-            $nombreArchivo = time() . '_' . $fotoPath->getClientOriginalName();
+            $nombreArchivo = $fotoPath->hashName();
             $rutaDestino = public_path('uploads/fotos');
             $fotoPath->move($rutaDestino, $nombreArchivo);
             $proyecto->fotos = 'uploads/fotos/' . $nombreArchivo;
