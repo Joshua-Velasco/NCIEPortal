@@ -8,6 +8,8 @@
 .env
 .env.backup
 .env.production
+.env.*.backup
+.env.xampp.backup
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -17,3 +19,17 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# macOS y residuos del hosting anterior
+.DS_Store
+._*
+/default1.php
+
+# Documentos internos que no se publican
+/manuales
+/Bitacoras
+/SKILL.md
+
+# Archivos subidos por usuarios (DemoSeeder copia las fotos de demostración)
+/public/uploads/fotos/*
+!/public/uploads/fotos/.gitkeep
