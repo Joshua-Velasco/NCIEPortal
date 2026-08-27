@@ -19,7 +19,7 @@
                 @csrf
                 <div class="row">
                      <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Gestor</label> <b>*</b>
                               <select name="gestor_id" id="" class="form-control">
                                 @foreach($gestores as $gestor)
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Área</label> <b>*</b>
                             <select name="area_id" id="" class="form-control">
                                 @foreach($areas as $area)
@@ -43,7 +43,7 @@
                  <div class="row">
                     
                     <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Días</label> <b>*</b>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" name="dia[]" value="LUNES" id="lunes" onchange="document.getElementById('dummy-required').checked = true">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                      <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Hora inicio</label> <b>*</b>
                             <input type="time" value="{{old('hora_inicio')}}" name="hora_inicio" class="form-control" required>
                             @error('hora_inicio')
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                      <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Hora fin</label> <b>*</b>
                             <input type="time" value="{{old('hora_fin')}}" name="hora_fin" class="form-control" required>
                             @error('hora_fin')
@@ -92,7 +92,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/horarios')}}" class="btn btn-secondary">Cancelar</a>
                             <button type="submit" class="btn btn-primary">Registrar horario</button>
                         </div>

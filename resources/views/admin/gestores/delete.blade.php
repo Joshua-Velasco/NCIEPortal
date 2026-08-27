@@ -20,25 +20,25 @@
                 @method('DELETE')
                  <div class="row">
                     <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Nombres</label>
                             <p>{{$gestor->nombres}}</p>
                         </div>
                     </div>
                      <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Apellidos</label>
                             <p>{{$gestor->apellidos}}</p>
                         </div>
                     </div>
                      <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Fecha de nacimiento</label>
                             <p>{{$gestor->fecha_nacimiento}}</p>
                         </div>
                     </div>
                      <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Celular</label>
                             <p>{{$gestor->celular}}</p>
                         </div>
@@ -47,19 +47,19 @@
                 <br>
                  <div class="row">
                     <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Carrera</label>
                             <p>{{$gestor->carrera}}</p>
                         </div>
                     </div>
                       <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Grado ácademico</label>
                             <p>{{$gestor->grado_academico}}</p>
                         </div>
                     </div>
                       <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Correo electrónico</label>
                             <p>{{$gestor->user->email}}</p>
                         </div>
@@ -69,7 +69,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/gestores')}}" class="btn btn-secondary">Cancelar</a>
                              <button type="submit" class="btn btn-danger">Eliminar gestor</button>
                         </div>

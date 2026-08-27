@@ -19,7 +19,7 @@
                 @csrf
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Nombre del área</label> <b>*</b>
                             <input type="text" value="{{old('nombre')}}" name="nombre" class="form-control" required>
                             @error('nombre')
@@ -31,7 +31,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Descripción</label> <b>*</b>
                             <input type="text" value="{{old('descripcion')}}" name="descripcion" class="form-control" required>
                             @error('descripcion')
@@ -44,7 +44,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/areas')}}" class="btn btn-secondary">Cancelar</a>
                             <button type="submit" class="btn btn-primary">Registrar área</button>
                         </div>

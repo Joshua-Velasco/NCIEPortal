@@ -17,7 +17,7 @@
                 @csrf
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Motivo</label> <b>*</b>
                             <textarea name="motivo" class="form-control" required>{{old('motivo')}}</textarea>
                             @error('motivo')
@@ -29,7 +29,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Monto</label> <b>*</b>
                             <input type="number" step="0.01" value="{{old('monto')}}" name="monto" class="form-control" required>
                             @error('monto')
@@ -41,7 +41,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Fecha</label> <b>*</b>
                             <input type="date" value="{{old('fecha')}}" name="fecha" class="form-control" required>
                             @error('fecha')
@@ -54,7 +54,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/presupuestos')}}" class="btn btn-secondary">Cancelar</a>
                             <button type="submit" class="btn btn-primary">Registrar presupuesto</button>
                         </div>

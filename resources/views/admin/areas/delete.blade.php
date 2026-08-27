@@ -20,7 +20,7 @@
                 @method('DELETE')
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Nombre del área</label> 
                            <p>{{$area->nombre}}</p>
                         </div>
@@ -29,7 +29,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Descripción</label>
                            <p>{{$area->descripcion}}</p>
                         </div>
@@ -39,7 +39,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/areas')}}" class="btn btn-secondary">Cancelar</a>
                              <button type="submit" class="btn btn-danger">Eliminar área</button>
                         </div>

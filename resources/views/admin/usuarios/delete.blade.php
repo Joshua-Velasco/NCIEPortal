@@ -20,7 +20,7 @@
                 @method('DELETE')
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Nombre del usuario</label> 
                             <input type="text" value="{{$usuario->name}}" name="name" class="form-control" disabled>
                             @error('name')
@@ -32,7 +32,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Correo electrónico</label>
                             <input type="email" value="{{$usuario->email}}" name="email" class="form-control" disabled>
                             @error('email')
@@ -44,7 +44,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/usuarios')}}" class="btn btn-secondary">Cancelar</a>
                             <button type="submit" class="btn btn-danger">Eliminar usuario</button>
                         </div>

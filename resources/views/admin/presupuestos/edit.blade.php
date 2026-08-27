@@ -18,7 +18,7 @@
                 @method('PUT')
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Motivo</label> <b>*</b>
                             <textarea name="motivo" class="form-control" required>{{$presupuesto->motivo}}</textarea>
                             @error('motivo')
@@ -30,7 +30,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Monto</label> <b>*</b>
                             <input type="number" step="0.01" value="{{$presupuesto->monto}}" name="monto" class="form-control" required>
                             @error('monto')
@@ -42,7 +42,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Fecha</label> <b>*</b>
                             <input type="date" value="{{$presupuesto->fecha}}" name="fecha" class="form-control" required>
                             @error('fecha')
@@ -55,7 +55,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/presupuestos')}}" class="btn btn-secondary">Cancelar</a>
                             <button type="submit" class="btn btn-success">Actualizar presupuesto</button>
                         </div>

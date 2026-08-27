@@ -18,7 +18,7 @@
                         @method('DELETE')
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form group">
+                                <div class="form-group">
                                     <label for="">Motivo</label> 
                                     <p>{{$presupuesto->motivo}}</p>
                                 </div>
@@ -27,7 +27,7 @@
                         <br>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form group">
+                                <div class="form-group">
                                     <label for="">Monto</label>
                                     <p>{{$presupuesto->monto}}</p>
                                 </div>
@@ -36,7 +36,7 @@
                         <br>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form group">
+                                <div class="form-group">
                                     <label for="">Fecha</label>
                                     <p>{{$presupuesto->fecha}}</p>
                                 </div>
@@ -46,7 +46,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form group">
+                                <div class="form-group">
                                     <a href="{{url('admin/presupuestos')}}" class="btn btn-secondary">Cancelar</a>
                                     <button type="submit" class="btn btn-danger">Eliminar presupuesto</button>
                                 </div>

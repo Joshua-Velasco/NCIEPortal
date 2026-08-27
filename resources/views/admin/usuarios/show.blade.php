@@ -18,7 +18,7 @@
               
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Nombre del usuario:</label> 
                             <p>{{$usuario->name}}</p>
                         </div>
@@ -27,7 +27,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Correo electrónico:</label>
                             <p>{{$usuario->email}}</p>
                         </div>
@@ -36,7 +36,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/usuarios')}}" class="btn btn-secondary">Cancelar</a>
                           
                         </div>

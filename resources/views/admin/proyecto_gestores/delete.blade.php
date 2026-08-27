@@ -18,7 +18,7 @@
                 @method('DELETE')
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Gestor</label> 
                            <p>{{$asignacion->gestor->nombres}} {{$asignacion->gestor->apellidos}}</p>
                         </div>
@@ -27,7 +27,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Proyecto asignado</label>
                            <p>{{$asignacion->proyecto->nombre}}</p>
                         </div>
@@ -37,7 +37,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/proyecto_gestores')}}" class="btn btn-secondary">Cancelar</a>
                              <button type="submit" class="btn btn-danger">Eliminar asignación</button>
                         </div>

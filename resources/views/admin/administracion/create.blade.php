@@ -19,7 +19,7 @@
                 @csrf
                  <div class="row">
                     <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Nombres</label> <b>*</b>
                             <input type="text" value="{{old('nombres')}}" name="nombres" class="form-control" required>
                             @error('nombres')
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                      <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Apellidos</label> <b>*</b>
                             <input type="text" value="{{old('apellidos')}}" name="apellidos" class="form-control" required>
                             @error('apellidos')
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                      <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Teléfono</label> <b>*</b>
                             <input type="text" value="{{old('telefono')}}" name="telefono" class="form-control" required>
                             @error('telefono')
@@ -49,7 +49,7 @@
                 <br>
                  <div class="row">
                       <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Carrera</label> <b>*</b>
                             <input type="text" value="{{old('carrera')}}" name="carrera" class="form-control" required>
                             @error('carrera')
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                       <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Grado Académico</label> <b>*</b>
                             <input type="text" value="{{old('grado_academico')}}" name="grado_academico" class="form-control" required>
                             @error('grado_academico')
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Correo electrónico</label> <b>*</b>
                             <input type="email" value="{{old('email')}}" name="email" class="form-control" required>
                             @error('email')
@@ -79,7 +79,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Contraseña</label> <b>*</b>
                             <input type="password" value="{{old('password')}}" name="password" class="form-control" required> 
                             @error('password')
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                      <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Contraseña verificación</label> <b>*</b>
                             <input type="password" name="password_confirmation" class="form-control" required>
                              @error('password_confirmation')
@@ -100,7 +100,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/administracion')}}" class="btn btn-secondary">Cancelar</a>
                             <button type="submit" class="btn btn-primary">Registrar administrativo</button>
                         </div>

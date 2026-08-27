@@ -19,7 +19,7 @@
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Gestor</label> <b>*</b>
                             <select class="form-control" id="gestor_id" name="gestor_id" required>
                         <option value="">Seleccione un gestor</option>
@@ -33,7 +33,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Proyecto</label> <b>*</b>
                         <select class="form-control" id="proyecto_id" name="proyecto_id" required>
                         <option value="">Seleccione un proyecto</option>
@@ -47,7 +47,7 @@
               <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/proyecto_gestores')}}" class="btn btn-secondary">Cancelar</a>
                             <button type="submit" class="btn btn-primary">Registrar asignación</button>
                         </div>

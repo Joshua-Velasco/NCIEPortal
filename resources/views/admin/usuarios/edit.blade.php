@@ -20,7 +20,7 @@
                 @method('PUT')
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Nombre del usuario</label> <b>*</b>
                             <input type="text" value="{{$usuario->name}}" name="name" class="form-control" required>
                             @error('name')
@@ -32,7 +32,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Correo electrónico</label> <b>*</b>
                             <input type="email" value="{{$usuario->email}}" name="email" class="form-control" required>
                             @error('email')
@@ -44,7 +44,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Contraseña</label>
                             <input type="password" value="{{old('password')}}" name="password" class="form-control">
                             @error('password')
@@ -56,7 +56,7 @@
                 <br>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Contraseña verificación</label> 
                             <input type="password" name="password_confirmation" class="form-control">
                              @error('password_confirmation')
@@ -68,7 +68,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/usuarios')}}" class="btn btn-secondary">Cancelar</a>
                             <button type="submit" class="btn btn-success">Actualizar usuario</button>
                         </div>

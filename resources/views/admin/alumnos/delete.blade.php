@@ -21,25 +21,25 @@
                 @method('DELETE')
                      <div class="row">
                     <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Nombres</label>
                             <p>{{$alumno->nombres}}</p>
                         </div>
                     </div>
                      <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Apellidos</label>
                             <p>{{$alumno->apellidos}}</p>
                         </div>
                     </div>
                      <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Fecha de nacimiento</label>
                             <p>{{$alumno->fecha_nacimiento}}</p>
                         </div>
                     </div>
                      <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Celular</label>
                             <p>{{$alumno->celular}}</p>
                         </div>
@@ -48,25 +48,25 @@
                 <br>
                  <div class="row">
                       <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Numero de control</label>
                             <p>{{$alumno->numero_control}}</p>
                         </div>
                     </div>
                     <div class="col-md-3">
-                    <div class="form group">
+                    <div class="form-group">
                             <label for="">Carrera</label>
                              <p>{{$alumno->carrera}}</p>
                         </div>
                         </div>
                           <div class="col-md-3">
-                         <div class="form group">
+                         <div class="form-group">
                             <label for="">Semestre</label>
                             <p>{{$alumno->semestre}}</p>
                         </div>
                         </div>
                                  <div class="col-md-3">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Correo electrónico</label>
                             <p>{{$alumno->user->email}}</p>
                         </div>
@@ -76,7 +76,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/alumnos')}}" class="btn btn-secondary">Volver</a>
                             <button type="submit" class="btn btn-danger">Eliminar alumno</button>
                         </div>

@@ -18,19 +18,19 @@
               
                  <div class="row">
                       <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">nombre del administrativo:</label> 
                             <p>{{$administrativo->nombres}}</p>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Apellido del administrativo:</label> 
                             <p>{{$administrativo->apellidos}}</p>
                         </div>
                     </div>
                      <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Teléfono:</label>
                             <p>{{$administrativo->telefono}}</p>
                         </div>
@@ -39,19 +39,19 @@
                 <br>
                    <div class="row">
                       <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Carrera:</label> 
                             <p>{{$administrativo->carrera}}</p>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Grado Académico:</label> 
                             <p>{{$administrativo->grado_academico}}</p>
                         </div>
                     </div>
                      <div class="col-md-4">
-                        <div class="form group">
+                        <div class="form-group">
                             <label for="">Correo electrónico:</label>
                             <p>{{$administrativo->user->email}}</p>
                         </div>
@@ -60,7 +60,7 @@
                 <hr>
                  <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('admin/administracion')}}" class="btn btn-secondary">Cancelar</a>
                           
                         </div>

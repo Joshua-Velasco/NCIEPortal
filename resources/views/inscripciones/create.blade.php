@@ -27,7 +27,7 @@
                     </div>
                      <div class="row">
                     <div class="col-md-12">
-                        <div class="form group">
+                        <div class="form-group">
                             <a href="{{url('/admin')}}" class="btn btn-secondary">Cancelar</a>
                     <button type="submit" class="btn btn-primary">Registrarse</button>
                         </div>
