@@ -3,7 +3,6 @@
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\InscripcionController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProyectoGestorController;
 use App\Http\Controllers\ReporteController;
@@ -210,5 +209,5 @@ Route::middleware(['auth'])->group(function () {
         return redirect()->back();
     })->name('markAsRead');
 
-    Route::post('/mark-as-read', 'PostController@markNotification')->name('markNotification');
+    Route::post('/mark-as-read', [App\Http\Controllers\PostController::class, 'markNotification'])->name('markNotification');
 });
