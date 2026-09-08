@@ -1,40 +1,49 @@
-<h3><center> <b>Horario de atención de {{$area->nombre}}</b> </center></h3>
-<hr>
- <table class="table table-striped table-bordered table-hover table table-bordered">
-  <thead>
-    <tr style="text-align: center">
-       <th>Nombre del gestor</th>
-       <th>Lunes</th>
-       <th>Martes</th>
-       <th>Miércoles</th>
-       <th>Jueves</th>
-       <th>Viernes</th>
-    </tr>
-  </thead>
-  <tbody>  
-       @foreach($horarios as $gestorId => $horariosGestor)
-          @php
-              $gestor = $horariosGestor->first()->gestor;
-          @endphp
+@php
+  $dias = ['LUNES' => ['Lunes', 'Lun'], 'MARTES' => ['Martes', 'Mar'], 'MIERCOLES' => ['Miércoles', 'Mié'], 'JUEVES' => ['Jueves', 'Jue'], 'VIERNES' => ['Viernes', 'Vie']];
+  $hoy = ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO', 'DOMINGO'][\Carbon\Carbon::now()->dayOfWeekIso - 1];
+  $hora = fn ($h) => \Carbon\Carbon::parse($h)->format('G:i');
+@endphp
+@if ($horarios->isEmpty())
+  <div class="schedule-empty">
+    <p>Esta área todavía no tiene horarios publicados. Escríbenos a <a href="mailto:ncie@itcj.edu.mx">ncie@itcj.edu.mx</a> para agendar una visita.</p>
+  </div>
+@else
+  <div class="table-scroll">
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th scope="col">Gestor</th>
+          @foreach ($dias as $clave => $nombreDia)
+            <th scope="col" class="{{ $clave === $hoy ? 'is-today' : '' }}">
+              <span class="d-long">{{ $nombreDia[0] }}</span><span class="d-short">{{ $nombreDia[1] }}</span>
+              @if ($clave === $hoy)<em>Hoy</em>@endif
+            </th>
+          @endforeach
+        </tr>
+      </thead>
+      <tbody>
+        @foreach ($horarios as $horariosGestor)
+          @php $gestor = $horariosGestor->first()->gestor; @endphp
           <tr>
-              <td>{{ $gestor->nombres }} {{ $gestor->apellidos }}</td>
-              @foreach(['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES'] as $dia)
-              <td style="text-align: center">
-                  @php
-                      $horarioDia = $horariosGestor->filter(function($horario) use ($dia) {
-                          return in_array($dia, explode(',', $horario->dia));
-                      })->first();
-                  @endphp
-                  
-                  @if($horarioDia)
-                      {{ date('h:i a', strtotime($horarioDia->hora_inicio)) }} - 
-                      {{ date('h:i a', strtotime($horarioDia->hora_fin)) }}
-                  @else
-                      -
-                  @endif
+            <th scope="row">
+              <strong>{{ $gestor?->nombres }} {{ $gestor?->apellidos }}</strong>
+              @if ($gestor?->grado_academico || $gestor?->carrera)<small>{{ $gestor->grado_academico ?: $gestor->carrera }}</small>@endif
+            </th>
+            @foreach ($dias as $clave => $nombreDia)
+              @php
+                $h = $horariosGestor->first(fn ($x) => in_array($clave, array_map('trim', explode(',', $x->dia))));
+              @endphp
+              <td class="{{ $clave === $hoy ? 'is-today' : '' }}">
+                @if ($h)
+                  <span class="slot">{{ $hora($h->hora_inicio) }} a {{ $hora($h->hora_fin) }}</span>
+                @else
+                  <span class="slot slot--off" role="img" aria-label="Sin atención">—</span>
+                @endif
               </td>
-              @endforeach
+            @endforeach
           </tr>
-      @endforeach
-  </tbody>
-</table>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+@endif
