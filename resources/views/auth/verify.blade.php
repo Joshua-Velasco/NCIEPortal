@@ -1,40 +1,51 @@
-@extends('layouts.app')
+@extends('layouts.auth')
+@section('title', 'Verifica tu correo')
+@section('auth-theme', 'blue')
+@section('auth-side', 'left')
+@section('aside-title', 'Confirma tu correo')
+@section('aside-text', 'Abre el enlace que te enviamos y entras directo al panel.')
+@section('card-class', 'auth-card--wide')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Verifica tu dirección de correo electrónico') }}</div>
+  <ol class="steps" aria-label="Progreso">
+    <li class="is-done"><span>1</span>Crear cuenta</li>
+    <li class="is-current" aria-current="step"><span>2</span>Verificar correo</li>
+    <li><span>3</span>Entrar al panel</li>
+  </ol>
 
-                <div class="card-body">
-                    @if (session('resent'))
-                        <div class="alert alert-success" role="alert">
-                            {{ __('Se ha enviado un nuevo enlace de verificación a tu correo electrónico.') }}
-                        </div>
-                    @endif
+  <div class="auth-icon"><i class="bi bi-envelope-check"></i></div>
+  <h1>Revisa tu correo</h1>
+  <p class="lead">
+    @auth
+      Te enviamos un enlace de verificación a <strong>{{ auth()->user()->email }}</strong>. Ábrelo para activar tu cuenta.
+    @else
+      Te enviamos un enlace de verificación a tu correo. Ábrelo para activar tu cuenta.
+    @endauth
+  </p>
 
-                    {{ __('Antes de continuar, por favor revisa tu correo electrónico para encontrar el enlace de verificación.') }}
-                    {{ __('Si no recibiste el correo') }},
-                    <form class="d-inline" method="POST" action="{{ route('verification.resend') }}" id="resendForm">
-    @csrf
-    <button type="submit" class="btn btn-link p-0 m-0 align-baseline" id="resendButton">
-        {{ __('haz clic aquí para solicitar otro') }}
-    </button>.
-</form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+  @if (session('resent') || session('message') || session('status'))
+    <div class="notice is-ok" role="status">Enviamos un nuevo enlace de verificación a tu correo.</div>
+  @endif
+
+  <div class="actions">
+    <form method="POST" action="{{ route('verification.resend') }}" id="resendForm">
+      @csrf
+      <button type="submit" class="btn btn-auth" id="resendButton">Reenviar enlace</button>
+    </form>
+    <form method="POST" action="{{ route('logout') }}">
+      @csrf
+      <button type="submit" class="btn btn-glass">Cerrar sesión</button>
+    </form>
+  </div>
+
+@endsection
+
+@section('scripts')
 <script>
-    document.getElementById('resendForm').addEventListener('submit', function(e) {
-        const button = document.getElementById('resendButton');
-        button.disabled = true;
-        button.textContent = '{{ __("Enviando...") }}';
-        
-        // Opcional: Prevenir múltiples envíos incluso si el usuario manipula el DOM
-        e.target.removeEventListener('submit', arguments.callee);
-    });
+  document.getElementById('resendForm').addEventListener('submit', function () {
+    var b = document.getElementById('resendButton');
+    b.disabled = true;
+    b.textContent = 'Enviando…';
+  });
 </script>
 @endsection

@@ -1,21 +1,49 @@
-@extends('layouts.app')
+@extends('layouts.auth')
+@section('title', 'Cuenta creada')
+@section('auth-theme', 'red')
+@section('auth-side', 'right')
+@section('auth-image', 'nodo2.jpg')
+@section('aside-title', 'Ya casi estás dentro')
+@section('aside-text', 'Solo falta abrir el enlace que te enviamos al correo.')
+@section('card-class', 'auth-card--wide')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Registro Exitoso') }}</div>
+  <ol class="steps" aria-label="Progreso">
+    <li class="is-done"><span>1</span>Crear cuenta</li>
+    <li class="is-current" aria-current="step"><span>2</span>Verificar correo</li>
+    <li><span>3</span>Entrar al panel</li>
+  </ol>
 
-                <div class="card-body">
-                    <div class="alert alert-success">
-                        {{ __('Se ha enviado un enlace de verificación a tu dirección de correo electrónico.') }}
-                    </div>
-                    <p>{{ __('Antes de continuar, por favor revisa tu correo y haz clic en el enlace de verificación.') }}</p>
-                    <p>{{ __('Si no recibiste el correo') }}, <a href="{{ route('verification.resend') }}">{{ __('haz clic aquí para solicitar otro') }}</a>.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+  <div class="auth-icon"><i class="bi bi-patch-check"></i></div>
+  <h1>Tu cuenta está lista</h1>
+  <p class="lead">
+    @auth
+      Solo falta verificar tu correo. Te enviamos un enlace a <strong>{{ auth()->user()->email }}</strong>; ábrelo para activar la cuenta.
+    @else
+      Solo falta verificar tu correo. Te enviamos un enlace a tu bandeja; ábrelo para activar la cuenta.
+    @endauth
+  </p>
+
+  @if (session('resent') || session('message') || session('status'))
+    <div class="notice is-ok" role="status">Enviamos un nuevo enlace de verificación a tu correo.</div>
+  @endif
+
+  <div class="actions">
+    <form method="POST" action="{{ route('verification.resend') }}" id="resendForm">
+      @csrf
+      <button type="submit" class="btn btn-auth" id="resendButton">Reenviar enlace</button>
+    </form>
+    <a href="{{ url('/') }}" class="btn btn-glass">Ir al inicio</a>
+  </div>
+
+@endsection
+
+@section('scripts')
+<script>
+  document.getElementById('resendForm').addEventListener('submit', function () {
+    var b = document.getElementById('resendButton');
+    b.disabled = true;
+    b.textContent = 'Enviando…';
+  });
+</script>
 @endsection

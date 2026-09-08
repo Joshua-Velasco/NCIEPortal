@@ -1,49 +1,28 @@
-@extends('layouts.app2')
+@extends('layouts.auth')
+@section('title', 'Confirmar contraseña')
+@section('aside-title', 'Un paso de seguridad')
+@section('aside-text', 'Confirma tu contraseña antes de continuar con esta acción.')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Confirmar Contraseña') }}</div>
+  <h1>Confirma tu contraseña</h1>
+  <p class="lead">Para proteger tu cuenta, escribe tu contraseña antes de continuar.</p>
 
-                <div class="card-body">
-                    {{ __('Por favor confirme su contraseña antes de continuar.') }}
-
-                    <form method="POST" action="{{ route('password.confirm') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Confirm Password') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+  <form method="POST" action="{{ route('password.confirm') }}" novalidate>
+    @csrf
+    <div class="field">
+      <label for="password">Contraseña</label>
+      <div class="pw">
+        <input id="password" class="input @error('password') is-invalid @enderror" type="password" name="password" required autocomplete="current-password" autofocus>
+        <button type="button" class="pw-toggle" data-target="password" aria-label="Mostrar contraseña"><i class="bi bi-eye"></i></button>
+      </div>
+      @error('password')<p class="hint" role="alert">{{ $message }}</p>@enderror
     </div>
-</div>
+    <button type="submit" class="btn btn-auth btn-block">Confirmar</button>
+  </form>
+
+  @if (Route::has('password.request'))
+    <div class="auth-alt">
+      <p><a href="{{ route('password.request') }}">Olvidé mi contraseña</a></p>
+    </div>
+  @endif
 @endsection
