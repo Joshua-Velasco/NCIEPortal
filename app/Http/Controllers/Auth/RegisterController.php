@@ -68,19 +68,31 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-        ])->assignRole('usuario');
+        ]);
+
+        // Con la verificación desactivada la cuenta nace verificada (ver config/ncie.php).
+        // forceFill porque email_verified_at no es asignable en masa; así el evento
+        // Registered no dispara el correo de verificación.
+        if (! config('ncie.email_verification')) {
+            $user->forceFill(['email_verified_at' => now()])->save();
+        }
+
+        return $user->assignRole('usuario');
     }
 
     protected function registered(Request $request, $user)
     {
-        // Opcional: Enviar notificación de verificación
+        // Verificación desactivada: entrar directo al panel sin enviar correo
+        if (! config('ncie.email_verification')) {
+            return redirect('/admin');
+        }
+
         $user->sendEmailVerificationNotification();
 
-        // Redirigir a la página de verificación
         return redirect()->route('verification.notice');
     }
 }
