@@ -1,97 +1,110 @@
-# NCIEPortal
+# Sistema NCIE
 
-NCIEPortal es una plataforma de gestión diseñada para el NCIE (Núcleo de Capacitación e Innovación Empresarial). Este portal facilita la administración de cursos, proyectos, usuarios e inscripciones, permitiendo una interacción fluida entre administradores, instructores y estudiantes.
+Plataforma web del **Nodo de Creatividad, Innovación y Emprendimiento (NCIE)** del Instituto Tecnológico de Ciudad Juárez (TecNM). Reúne un sitio público para la comunidad y un panel interno para administrar el nodo: personas, áreas, horarios de atención, cursos con calendario e inscripciones, proyectos, presupuestos y avisos.
 
-## 🚀 Inicio Rápido e Instalación
-
-Para poner en marcha el proyecto localmente, sigue estos pasos:
-
-1. **Requisitos Previos**:
-    - PHP >= 8.1
-    - Composer
-    - XAMPP o un servidor local compatible con MySQL.
-    - Node.js y NPM.
-
-2. **Instalación**:
-
-    ```bash
-    # Clonar el repositorio (si no lo has hecho)
-    git clone https://github.com/NCIE-2026/NCIEPortal.git
-
-    # Entrar al directorio
-    cd NCIEPortal
-
-    # Instalar dependencias de PHP
-    composer install
-
-    # Instalar dependencias de JS
-    npm install
-
-    # Copiar el archivo de entorno
-    cp .env.example .env
-
-    # Generar la clave de la aplicación
-    php artisan key:generate
-    ```
-
-3. **Configuración de Base de Datos**:
-    - Crea una base de datos en MySQL (ej. `ncie_portal`).
-    - Configura las credenciales en tu archivo `.env`.
-    - Ejecuta las migraciones y seeders:
-        ```bash
-        php artisan migrate --seed
-        ```
-
-4. **Ejecutar el Proyecto**:
-
-    ```bash
-    # Servidor de desarrollo
-    php artisan serve
-
-    # Compilar assets
-    npm run dev
-    ```
-
-## 🐳 Despliegue con Docker (Recomendado para Testers)
-
-Si tienes Docker instalado, puedes levantar el proyecto sin configurar PHP o MySQL manualmente:
-
-1. **Levantar contenedores**:
-   ```bash
-   ./vendor/bin/sail up -d
-   ```
-2. **Instalar dependencias y migrar** (solo la primera vez):
-   ```bash
-   ./vendor/bin/sail composer install
-   ```
-3. **Migrar base de datos**:
-   ```bash
-   ./vendor/bin/sail artisan migrate --seed
-   ```
-4. **Acceso**: El sistema estará disponible en `http://localhost`.
-
-## 🧪 Pruebas y Calidad
-
-Para asegurar la calidad del código, el proyecto utiliza:
-
-- **PHPUnit**: Para pruebas funcionales. Ejecuta `./vendor/bin/sail test`.
-- **PHPStan**: Análisis estático de errores. Ejecuta `./vendor/bin/sail bin phpstan analyze`.
-- **GitHub Actions**: Cada commit a `main` o `develop` activa automáticamente estas pruebas.
-
-## 🔑 Credenciales de Acceso
-
-Para acceder al portal administrativo durante el desarrollo, utiliza las siguientes credenciales:
-
-- **Email:** `sistemancie@gmail.com`
-- **Password:** `123456789`
-
-## 📁 Estructura del Proyecto
-
-- `app/`: Contiene la lógica central (Modelos, Controladores, Mailers).
-- `database/`: Migraciones y seeders para la base de datos.
-- `resources/views/`: Plantillas Blade para la interfaz de usuario.
-- `routes/`: Definición de rutas web y de API.
+**Versión:** 1.8.1 · **Stack:** Laravel 10, PHP 8.2, PostgreSQL 16, Docker · **Idioma:** español
 
 ---
 
-© 2026 NCIE. Todos los derechos reservados.
+## Qué incluye
+
+**Sitio público** (`/`)
+- Portada con las dos formas de participar: tomar un curso o unirse a un proyecto.
+- Video del nodo integrado y ficha con fundación, modelo, áreas y ubicación.
+- Áreas del nodo leídas de la base de datos, con icono propio por área.
+- Horario de atención de gestores por área, con el día de hoy marcado.
+- Tabla de proyectos en curso con su área y gestor responsable.
+- Galería, contacto con mapa y buzón de sugerencias, y preguntas frecuentes.
+- Fondo que cambia de escena de color mientras se recorre la página.
+
+**Acceso** (`/login`, `/register`)
+- Pantallas a pantalla completa con imagen lateral; iniciar sesión en azul y crear cuenta en rojo.
+- Verificación de correo opcional, controlada por configuración.
+
+**Panel** (`/admin`)
+- Menú lateral agrupado por Personas, Académico, Proyectos, Mi espacio y Comunicación, filtrado por rol.
+- Dashboard con resumen y calendario de cursos.
+- Altas, bajas y cambios de usuarios, administrativos, gestores, alumnos, áreas, horarios, cursos, asignaciones, proyectos y presupuestos.
+- Inscripciones a cursos con validación de choques de horario.
+- Avisos a la comunidad con notificaciones por rol, marcado de leídas e historial.
+
+## Arranque rápido con Docker
+
+Requisitos: Docker Desktop (Compose v2). No hace falta PHP, Composer ni Node en la máquina.
+
+```bash
+git clone https://github.com/Joshua-Velasco/NCIEPortal.git
+cd NCIEPortal
+
+cp .env.docker .env
+docker compose up -d --build
+docker compose exec app composer install
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
+docker compose exec app php artisan db:seed --class=DemoSeeder
+docker compose --profile assets run --rm node
+```
+
+Abre **http://localhost:8080**. El panel está en **http://localhost:8080/login**.
+
+Arranque diario después de apagar la máquina:
+
+```bash
+docker compose up -d
+```
+
+## Cuentas de demostración
+
+Las siembra `DemoSeeder`. Contraseña para todas: `12345678`.
+
+| Rol | Correo |
+|---|---|
+| Admin | `sistemancie@gmail.com` |
+| Administrativo | `admin.ncie1@itcj.edu.mx` (también `admin.ncie2`, `admin.ncie3`) |
+| Gestor | `gestor1@itcj.edu.mx` … `gestor7@itcj.edu.mx` |
+| Alumno | `l21110001@cdjuarez.tecnm.mx` … `l21110012@cdjuarez.tecnm.mx` |
+| Usuario de la comunidad | `laura.beltran@gmail.com` |
+
+Volver a ejecutar `DemoSeeder` borra los datos del dominio y todos los usuarios que no sean admin antes de sembrar de nuevo.
+
+## Servicios de Docker
+
+| Servicio | Imagen | Puerto | Función |
+|---|---|---|---|
+| `nginx` | nginx:1.27-alpine | 8080 | Servidor web |
+| `app` | php:8.2-fpm-alpine (Dockerfile propio) | interno 9000 | Laravel |
+| `db` | postgres:16-alpine | 5432 | Base de datos `ncie` |
+| `node` | node:20-alpine (perfil `assets`) | — | Compila los assets de Vite bajo demanda |
+
+## Documentación
+
+| Archivo | Contenido |
+|---|---|
+| [INFO.md](INFO.md) | Qué es el sistema, roles, módulos y estado del proyecto |
+| [DOCUMENTACION.md](DOCUMENTACION.md) | Guía técnica: entorno, configuración, panel, sitio público, solución de problemas |
+| [BD_DIAGRAMA.md](BD_DIAGRAMA.md) | Diagrama entidad-relación y diccionario de datos de PostgreSQL |
+| [CHANGELOG.md](CHANGELOG.md) | Historial de versiones |
+
+## Estructura
+
+```
+app/            Controladores, modelos, eventos, listeners, notificaciones y correo
+config/ncie.php Interruptores propios del sistema (verificación de correo)
+database/       Migraciones y seeders (RoleSeeder, DatabaseSeeder, DemoSeeder)
+docker/         Dockerfile de PHP-FPM y configuración de NGINX
+public/assets/  Sitio público (ncie.css, iconos, imágenes, galería)
+public/dist/    AdminLTE 3 y tema del panel (ncie-admin.css)
+resources/views/ Vistas Blade: index (landing), auth/, layouts/, admin/, post/, inscripciones/, reportes/
+routes/web.php  Rutas; cada una protegida con auth, verified y su permiso
+tests/          Pruebas de humo (PHPUnit)
+```
+
+## Calidad
+
+- `php artisan test` ejecuta las pruebas de PHPUnit.
+- `vendor/bin/phpstan analyze` corre el análisis estático en nivel 5.
+- GitHub Actions ejecuta ambos en cada push a `main` o `develop`.
+
+## Créditos
+
+Desarrollado para el NCIE del Instituto Tecnológico de Ciudad Juárez. Interfaz sobre Laravel, AdminLTE 3 y Bootstrap Icons; tipografía Archivo.
