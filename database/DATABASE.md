@@ -1,3 +1,5 @@
+> Este resumen describe la base de datos antes de la migración a PostgreSQL. El diagrama entidad-relación y el diccionario actualizados están en [BD_DIAGRAMA.md](../BD_DIAGRAMA.md).
+
 # Análisis de la Base de Datos: `u868517925_ncie`
 
 La base de datos está diseñada sobre el framework Laravel y utiliza el paquete **Spatie Laravel Permission** para la gestión de roles. A continuación, se detallan los componentes principales:
