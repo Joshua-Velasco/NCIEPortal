@@ -1,171 +1,123 @@
 # Sistema NCIE
 
-> Documento generado a partir de un análisis completo del código (rutas, controladores, modelos, migraciones, vistas, configuración y seeders). Fecha de análisis: 2026-08-25.
+> Descripción funcional del sistema. Actualizada el 2026-09-11 para la versión 2.0.0. La guía técnica está en [DOCUMENTACION.md](DOCUMENTACION.md) y la base de datos en [BD_DIAGRAMA.md](BD_DIAGRAMA.md).
 
-## ¿Qué es este proyecto?
+## Qué es este proyecto
 
-**Sistema NCIE** es una aplicación web de gestión académico-administrativa hecha a medida para el **Nodo de Creatividad, Innovación y Emprendimiento (NCIE)** del **Instituto Tecnológico de Ciudad Juárez (ITCJ / TecNM)**. Fue desplegada en `https://ncie.com.mx` (hosting Hostinger, tras Cloudflare).
+**Sistema NCIE** es la aplicación web del **Nodo de Creatividad, Innovación y Emprendimiento (NCIE)** del **Instituto Tecnológico de Ciudad Juárez (ITCJ, TecNM)**. El nodo, fundado en 2016, trabaja bajo un modelo dual entre academia y empresa en siete áreas: desarrollo de software, inteligencia artificial, realidad virtual y aumentada, impresión 3D, manufactura, Internet de las cosas y energías renovables.
 
-La aplicación tiene dos caras:
+La aplicación tiene tres partes:
 
-1. **Sitio público (landing)** — página informativa del nodo construida sobre la plantilla "Medilab" de BootstrapMade (Bootstrap 5, AOS, GLightbox, Swiper), con secciones de inicio, acerca de, áreas del nodo, gestores, galería y contacto, más un **buzón de sugerencias** que envía correo a `sistemancie@gmail.com` (solo para usuarios registrados con email verificado).
-2. **Panel interno (back-office)** — sistema multi-rol sobre **AdminLTE 3** para administrar todo el funcionamiento del nodo: personas, áreas, horarios de atención, cursos con calendario e inscripciones, proyectos, presupuestos, reportes y avisos internos.
+1. **Sitio público.** Presenta el nodo, sus áreas, el horario de atención de cada gestor, los proyectos en curso, la galería y un buzón de sugerencias. Es la puerta de entrada para estudiantes y comunidad.
+2. **Acceso.** Registro e inicio de sesión. Cualquier persona puede crear una cuenta; recibe el rol `usuario` y puede inscribirse a cursos desde el panel.
+3. **Panel interno.** Sistema multi-rol para administrar personas, áreas, horarios, cursos e inscripciones, proyectos, presupuestos y avisos.
 
-El NCIE (fundado ~2016 en el ITCJ) trabaja en áreas como desarrollo de software, inteligencia artificial, realidad aumentada, impresión 3D, manufactura, IoT y energías renovables — las "áreas" que administra el sistema.
+Desde agosto de 2026 el sistema se ejecuta en un entorno Docker local con PostgreSQL. Ya no se despliega en el hosting compartido donde nació.
 
 ## Stack tecnológico
 
 | Componente | Tecnología |
 |---|---|
-| Framework | Laravel 10 (PHP ≥ 8.1) |
-| Base de datos | MySQL (`u868517925_ncie` en producción) |
-| Autenticación | laravel/ui (sesión clásica Blade) con verificación de email obligatoria |
-| Autorización | spatie/laravel-permission (roles + permisos por ruta con middleware `can:*`) |
-| API | Laravel Sanctum instalado pero **sin usar** (solo el endpoint genérico `/api/user`) |
-| Frontend panel | Blade + AdminLTE 3 (Bootstrap 4), DataTables (export PDF/Excel/print), SweetAlert2, Select2, FullCalendar 6 (locale `es`) |
-| Frontend público | Plantilla Medilab (Bootstrap 5) en `public/assets/` |
-| Build | Vite 5 (Bootstrap 5 + Sass), aunque el panel usa en la práctica los assets estáticos de `public/dist` y `public/plugins` |
-| Correo | SMTP de Gmail (`sistemancie@gmail.com`) |
-| Idioma | Español en su totalidad (`locale es`, `resources/lang/es/`) |
+| Framework | Laravel 10 sobre PHP 8.2 |
+| Base de datos | PostgreSQL 16 (las migraciones también funcionan en MySQL) |
+| Entorno | Docker Compose: NGINX, PHP-FPM, PostgreSQL y Node para compilar assets |
+| Autenticación | laravel/ui con sesión clásica; verificación de correo opcional (`config/ncie.php`) |
+| Autorización | spatie/laravel-permission: 5 roles y 105 permisos nombrados como las rutas |
+| Sitio público y acceso | Blade + CSS propio (`public/assets/css/ncie.css`), Bootstrap Icons, GLightbox; sin Bootstrap ni jQuery |
+| Panel | Blade + AdminLTE 3 (Bootstrap 4) con tema propio (`public/dist/css/ncie-admin.css`), DataTables, SweetAlert2, FullCalendar 6 |
+| Tipografía | Archivo (fuente variable de Google Fonts) en todo el sistema |
+| Correo | En local se registra en `storage/logs/laravel.log` (`MAIL_MAILER=log`); en producción, SMTP |
+| Idioma | Español (`resources/lang/es/`) |
 
 ## Roles y permisos
 
-Cinco roles sembrados por `database/seeders/RoleSeeder.php`, con ~120 permisos nombrados igual que las rutas (`admin.cursos.index`, `inscripciones.store`, …):
+`database/seeders/RoleSeeder.php` siembra cinco roles. Cada ruta del panel exige `auth`, `verified` y el permiso con su mismo nombre, y el menú lateral solo muestra lo que el rol puede abrir.
 
 | Rol | Qué puede hacer |
 |---|---|
-| **admin** | Todo. Único que gestiona usuarios (`/admin/usuarios`) y administrativos (`/admin/administracion`). |
-| **administrativo** | Gestión operativa: alumnos, áreas, gestores, horarios, cursos, proyectos, asignaciones y presupuestos. |
-| **gestor** | Reportes de sus cursos/proyectos asignados y creación de avisos (posts). |
-| **alumno** | Inscribirse a cursos, ver "mis cursos" y "mis proyectos". |
-| **usuario** | Rol por defecto al auto-registrarse: inscribirse a cursos y ver "mis cursos". |
+| **admin** | Todo. Único que gestiona usuarios y administrativos. |
+| **administrativo** | Alumnos, áreas, gestores, horarios, cursos, proyectos, asignaciones y presupuestos. Publica avisos. |
+| **gestor** | Ve sus cursos asignados, los inscritos a ellos y sus proyectos. Publica avisos. |
+| **alumno** | Se inscribe a cursos y ve sus cursos y proyectos. |
+| **usuario** | Rol por defecto al registrarse: se inscribe a cursos y ve sus cursos. |
 
-`DatabaseSeeder` crea un usuario administrador por defecto (`sistemancie@gmail.com`). El registro público exige aceptar términos, asigna el rol `usuario` y obliga a verificar el correo antes de entrar al panel.
+`DatabaseSeeder` crea el administrador `sistemancie@gmail.com`; `DemoSeeder` agrega el resto de cuentas de demostración (ver [README.md](README.md)).
 
-## Módulos funcionales
+## Módulos
 
-### Panel de administración (`/admin`)
-- **Dashboard** — tarjetas con totales de cada entidad + "Calendario de cursos del nodo" (FullCalendar, alimentado por `/admin/cursos/calendar-events`).
-- **Usuarios / Administrativos / Gestores / Alumnos** — CRUDs que crean un `User` + su perfil y le asignan rol. El alumno guarda `numero_control` (8 dígitos, único), carrera, semestre y celular; gestores y administrativos guardan carrera y grado académico.
-- **Áreas** — catálogo de áreas del nodo (nombre + descripción).
-- **Horarios** — horario de atención de cada gestor en un área (días LUNES–VIERNES, hora inicio/fin); un gestor solo puede tener un horario. Se muestran agrupados por gestor en la landing pública vía AJAX.
-- **Cursos** — CRUD con fechas, horario, lugar, requisitos, modalidad (`presencial` | `en_linea`) y descripción.
-- **Asignaciones** — pivote gestor↔curso, con validación de solapamiento de horarios entre los cursos de un mismo gestor.
-- **Proyectos** — CRUD con foto (se guarda en `public/uploads/fotos`).
-- **Proyecto–Gestores** y **Alumno–Proyecto** — vinculación de responsables y participantes a proyectos.
-- **Presupuestos** — registro contable simple del centro (motivo, monto, fecha); *no* está ligado a proyectos.
+### Sitio público (`/`)
 
-### Zona de alumno/usuario
-- **Inscripciones** — el usuario ve los cursos disponibles (con gestor asignado, no finalizados, no inscritos ya) y se inscribe; se valida que el curso no haya empezado hace más de 2 días, que no haya duplicados y que **no choque en fechas/horarios** con otros cursos ya inscritos. Puede abandonar un curso desde "Mis cursos".
-- **Mis proyectos** — el alumno ve los proyectos en que participa, con tipo `residencias` | `servicio_social` | `propio` (figuras del TecNM) y fechas.
+- **Portada.** Titular, texto de presentación y la acción principal: crear cuenta o, con sesión iniciada, ver los cursos.
+- **Dos formas de participar.** Tomar un curso (abierto a todos) o unirse a un proyecto (estudiantes del ITCJ).
+- **El nodo.** Video integrado que se reproduce en la misma página, y ficha con fundación, modelo, número de áreas y ubicación.
+- **Áreas.** Se leen de la tabla `areas`; cada tarjeta lleva un icono elegido según el nombre del área.
+- **Atención de gestores.** Selector de área y tabla con los días y horas de atención, con el día de hoy marcado. Se carga por AJAX desde `GET /areas/{id}` con protección contra respuestas tardías y reintento.
+- **Proyectos.** Tabla con nombre, descripción, área y gestor de cada proyecto registrado.
+- **Galería**, **contacto** con mapa y buzón de sugerencias, y **preguntas frecuentes** en acordeón.
+- El fondo cambia entre cuatro escenas de color según la sección visible, respetando la preferencia de movimiento reducido.
 
-### Zona de gestor
-- **Reportes** — lista de sus cursos con los alumnos inscritos, sus cursos asignados y sus proyectos.
+### Acceso
 
-### Comunicación interna
-- **Avisos (posts)** — admin, administrativo o gestor publica un aviso; un evento (`PostEvent` → `PostListener`) genera notificaciones de base de datos (`PostNotification`) para todos los usuarios de los roles destino (o solo rol `usuario` si se marca `for_users_only`). Campana de notificaciones en el layout del panel con marcado de leídas.
-- **Buzón de sugerencias** — desde la landing, envía un `SugerenciaMail` al correo del nodo.
+- **Registro** con nombre, correo, contraseña y aceptación de términos (en un diálogo nativo).
+- **Verificación de correo** configurable. Con `NCIE_EMAIL_VERIFICATION=false` (valor actual) la cuenta nace verificada y entra directo al panel; con `true` se envía el enlace y se muestran las pantallas de verificación.
+- Recuperación y restablecimiento de contraseña, y confirmación de contraseña para acciones sensibles.
+
+### Panel (`/admin`)
+
+- **Dashboard.** Saludo, fecha, resumen de totales por módulo y calendario de cursos (FullCalendar) con detalle al hacer clic.
+- **Personas.** Usuarios, administrativos, alumnos y gestores. Cada alta crea un `User` con su perfil y rol.
+- **Académico.** Áreas, horarios de atención (un horario por gestor, que fija su área), cursos y asignación de gestores a cursos con validación de solapamientos.
+- **Proyectos.** Proyectos con foto, asignación a gestores, participación de alumnos (residencias, servicio social o propio) y presupuestos.
+- **Mi espacio.** Inscripción a cursos con validación de fechas y choques de horario, mis cursos, mis proyectos y, para gestores, reportes de inscritos.
+- **Comunicación.** Crear aviso con selector de destinatarios (comunidad del nodo o solo usuarios externos). Cada aviso genera notificaciones en base de datos por rol; la bandeja permite marcar leídas una a una o todas, y conserva las últimas 30 leídas. La campana de la barra superior muestra las pendientes.
 
 ## Modelo de datos
 
-Entidades principales (14 modelos, migraciones fechadas mayo–agosto 2025):
+25 tablas: 15 del dominio, 5 de Spatie Permission y 5 del framework. El diagrama entidad-relación y el diccionario completo están en [BD_DIAGRAMA.md](BD_DIAGRAMA.md). Puntos clave:
 
-- `users` — autenticación; se especializa 1:1 en `administrativos`, `gestores` o `alumnos` (FK `user_id`, borrado en cascada; al borrar el perfil también se elimina el `User`).
-- `areas` ← `horarios` → `gestores` — la relación gestor↔área se materializa a través del horario de atención.
-- `cursos` ↔ `gestores` vía pivote `gestor_curso`; `users` ↔ `cursos` vía `inscripciones` (única por usuario+curso — cualquier usuario, no solo alumnos, puede inscribirse).
-- `proyectos` ↔ `gestores` vía `gestor_proyecto`; `proyectos` ↔ `alumnos` vía `alumno_proyecto` con `tipo enum('residencias','servicio_social','propio')` y fechas.
-- `posts` (avisos, con autor) y `notifications` (notificaciones nativas de Laravel).
-- `presupuestos` (motivo, monto decimal, fecha) — sin FK, registro general.
-- Tablas de Spatie (`roles`, `permissions`, `model_has_roles`, …) y las estándar de Laravel (Sanctum, failed_jobs, password resets).
+- `users` se especializa 1:1 en `administrativos`, `gestores` y `alumnos`.
+- El área de un gestor se materializa en `horarios`; no hay columna `area_id` en `gestores`.
+- `cursos` ↔ `gestores` por `gestor_curso`; `users` ↔ `cursos` por `inscripciones`.
+- `proyectos` ↔ `gestores` por `gestor_proyecto`; `proyectos` ↔ `alumnos` por `alumno_proyecto`.
+- `posts` son los avisos y `notifications` las entregas por usuario.
 
-No hay observers, tareas programadas, colas (queue `sync`) ni broadcasting real; los tests son solo los `ExampleTest` de fábrica.
-
-## Estructura relevante
+## Estructura del código
 
 ```
-app/Http/Controllers/   20 controladores (Web, Admin, Usuario, Administrativo, Alumno,
-                        Gestor, Area, Horario, Curso, Asignacion, Inscripcion, Proyecto,
-                        ProyectoGestor, AlumnoProyecto, Presupuesto, Reporte, Post,
-                        Sugerencia, Home + Auth/ de laravel/ui)
+app/Http/Controllers/   Web (landing), Admin (dashboard), un controlador por módulo,
+                        Post (avisos), Sugerencia (buzón) y Auth/ de laravel/ui
 app/Models/             14 modelos del dominio
-app/Events|Listeners|Notifications/  flujo de avisos (PostEvent → PostNotification)
-app/Mail/               SugerenciaMail
-routes/web.php          ~214 líneas; toda ruta protegida con auth + verified + can:<ruta>
-resources/views/        admin/ (CRUDs), inscripciones/, reportes/, post/, auth/,
-                        layouts/ (AdminLTE), index.blade.php (landing Medilab)
-public/dist, plugins/   assets AdminLTE 3
-public/assets/          plantilla Medilab de la landing
-public/fullcalendar/    locale español de FullCalendar
-public/uploads/fotos/   fotos de proyectos subidas (contiene imágenes de prueba)
+app/Events, Listeners, Notifications/  flujo de avisos: PostEvent → PostListener → PostNotification
+config/ncie.php         interruptor de verificación de correo
+database/seeders/       RoleSeeder, DatabaseSeeder (admin), DemoSeeder (datos de demostración)
+docker/                 Dockerfile de PHP-FPM y default.conf de NGINX
+public/assets/css/      ncie.css: sistema visual del sitio público y el acceso
+public/dist/css/        ncie-admin.css: tema del panel sobre AdminLTE
+resources/views/        index.blade.php, cargar_datos_areas.blade.php, auth/, layouts/, admin/, post/,
+                        inscripciones/, reportes/
+routes/web.php          todas las rutas
 ```
 
-## Estado del proyecto y observaciones
+## Estado del proyecto
 
-Esta copia es un **árbol de trabajo/desarrollo** (volcado desde el hosting), no un despliegue productivo pulido. Indicios y problemas detectados durante el análisis:
+Versión 2.0.0, final del ciclo de desarrollo 2026. Historial completo en [CHANGELOG.md](CHANGELOG.md).
 
-- `default1.php` en la raíz es la página por defecto de **Hostinger** (residuo del hosting, no forma parte de la app), y `auth/login.blade.php` trae incrustado el script Zaraz de Cloudflare (copiado de producción).
-- `public/hot` (marcador del dev server de Vite, `http://[::1]:5173`) está presente: rompería los assets de las vistas que usan `@vite` en cualquier despliegue real.
-- **Bug de permisos**: en `routes/web.php` las rutas `admin.proyecto_gestores.edit/update` pasan el nombre del permiso como middleware **sin el prefijo `can:`**, por lo que esa protección no aplica (o la ruta falla).
-- **Ruta rota**: `POST /mark-as-read` usa la sintaxis string antigua `'PostController@markNotification'` sin namespace (falla en Laravel 10); además `web.php` importa un `NotificationController` que no existe.
-- `GET /admin/cursos/calendar-events` solo exige `auth` (sin `verified` ni permiso), a diferencia del resto del módulo de cursos.
-- Ruta de reenvío de verificación de email **duplicada**: la segunda definición (throttle `6,1`) pisa a la primera, anulando el throttle estricto personalizado (1 cada 5 min).
-- Typo `feha_inicio` en el `update` de `CursoController` que probablemente impide actualizar la fecha de inicio de un curso.
-- Relaciones muertas en modelos: `Administrativo::curso()` y `Gestor::area()` apuntan a columnas que no existen en sus tablas; `fecha_nacimiento` se guarda como string, no como date.
-- Las fotos de proyectos se guardan directamente en `public/uploads/fotos` (sin usar `storage/` ni symlink); las 9 imágenes presentes son datos de prueba.
+### Corregido durante el ciclo
 
-## Cómo levantarlo en local (referencia rápida)
+- Ruta `POST /mark-as-read` que usaba la sintaxis antigua de controlador y fallaba en Laravel 10; también se eliminó la importación a un controlador inexistente.
+- Clase `form group` mal escrita en decenas de formularios del panel, que rompía el espaciado.
+- Pantalla de notificaciones sin forma de marcar avisos como leídos.
+- Registro que fallaba con error 500 cuando el servidor de correo no estaba disponible; ahora la verificación es configurable y el correo local se registra en el log.
+- Carga del horario de gestores que podía quedarse en "Cargando" por respuestas fuera de orden.
+- Barra lateral del panel que se cortaba y perdía el degradado al plegarse.
+- Residuos del hosting anterior (`default1.php`, archivos `._*`, fotos de prueba) retirados del repositorio.
 
-1. `composer install` y copiar `.env.example` a `.env` (`php artisan key:generate`).
-2. Configurar MySQL en `.env` y ejecutar `php artisan migrate --seed` (siembra roles/permisos y el usuario admin).
-3. Eliminar `public/hot` si existe, o ejecutar `npm install && npm run build`.
-4. Servir con XAMPP/`php artisan serve`. El usuario admin sembrado es `sistemancie@gmail.com` (contraseña definida en `DatabaseSeeder`).
+### Pendiente conocido
 
-
-A) Arranque diario (después de reiniciar la Mac o apagar Docker)
-
-cd /Volumes/Snowden/public_html
-## docker compose up -d          # levanta nginx + app + db (sin rebuild)
-
-Abre http://localhost:8080. Eso es todo: la base de datos vive en el volumen pgdata, así que los datos de demo se conservan.
-
-Opcionales según el caso:
-
-docker compose exec app php artisan view:clear      # si editaste vistas Blade y no ves el cambio
-docker compose exec app php artisan db:seed --class=DemoSeeder   # re(borra y re-siembra; conserva al admin)
-docker compose down                                  # apagar (los datos se quedan)
-
-B) Instalación desde cero (máquina nueva o clon limpio)
-
-Requisitos: Docker Desktop con Compose v2.
-
-# 1) Raíz del proyecto
-cd /Volumes/Snowden/public_html
-
-# 2) Entorno de Docker (solo si no existe .env o viene de XAMPP)
-cp .env.docker .env
-
-# 3) Construir y levantar contenedores
-docker compose up -d --build
-
-# 4) Dependencias PHP y clave de la app
-docker compose exec app composer install
-docker compose exec app php artisan key:generate
-
-# 5) Esquema en PostgreSQL + roles/permisos + usuario admin
-docker compose exec app php artisan migrate --seed
-
-# 6) Datos de demostración
-docker compose exec app php artisan db:seed --class=DemoSeeder
-
-# 7) Assets de Vite (solo los usan layouts/app y app2; la landing y e
-docker compose --profile assets run --rm node
-
-# 8) Permisos de escritura (si Laravel se queja de storage/ o bootstrap/cache)
-docker compose exec app chmod -R ug+rw storage bootstrap/cache public/uploads/fotos
-
-Luego http://localhost:8080 → admin sistemancie@gmail.com / 12345678 (el resto de cuentas de demo están en mi mensaje anterior).
-
-Advertencias
-                                                                                                                                                                     docker compose down -v borra el volumen de PostgreSQL (pierdes toda para apagar.
-- DOCUMENTACION.md sección 5 tiene esta misma guía pero con la ruta vieja (/Volumes/Dev/XAMPP_External/...) y aún describe Hostinger/MySQL como producción; conviene actualizarla a la ruta actual y quitar lo de Hostinger. Si quieres,
-- Si el puerto 8080 o 5432 está ocupado, cámbialo en docker-compose.yml ("8080:80" / "5432:5432") y en APP_URL del .env.
+- Rutas `admin.proyecto_gestores.edit` y `update` declaran el permiso sin el prefijo `can:`, por lo que esa protección no aplica.
+- Error de tecleo `feha_inicio` en `CursoController@update`, que impide actualizar la fecha de inicio de un curso.
+- `fecha_nacimiento` se guarda como texto en `alumnos` y `gestores`.
+- Migración heredada `create_password_resets_table` duplicada respecto a `password_reset_tokens`.
+- Listados sin `orderBy` explícito; en PostgreSQL el orden de `Model::all()` no está garantizado.
+- Los correos no se normalizan a minúsculas; PostgreSQL distingue mayúsculas al comparar.
+- El botón de pantalla completa del panel se retiró porque el navegador cancela ese modo al cambiar de página. Se puede usar la pantalla completa del navegador.
