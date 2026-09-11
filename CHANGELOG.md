@@ -159,6 +159,7 @@ Versión final del ciclo de desarrollo 2026.
 ### Añadido
 - Base del sistema: Laravel 10 con laravel/ui y Spatie Permission, panel sobre AdminLTE 3, landing sobre Medilab, integración continua con PHPStan y PHPUnit.
 
+[2.1.0]: https://github.com/Joshua-Velasco/NCIEPortal/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/Joshua-Velasco/NCIEPortal/compare/v1.9.1...v2.0.0
 [1.9.1]: https://github.com/Joshua-Velasco/NCIEPortal/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/Joshua-Velasco/NCIEPortal/compare/v1.8.1...v1.9.0
