@@ -181,9 +181,9 @@ Frontend estático: AdminLTE 3 y su bundle de plugins en `public/dist` y `public
 
 ## 9. Calidad
 
-- `docker compose exec app php artisan test`: pruebas de humo (`tests/Feature/BasicFlowTest.php`).
-- `docker compose exec app vendor/bin/phpstan analyze`: análisis estático nivel 5 sobre `app/` y `tests/`.
-- `.github/workflows/laravel-ci.yml`: PHP 8.2, MySQL de servicio, build de Vite, PHPStan y PHPUnit en cada push a `main` o `develop`.
+- `docker compose exec app php artisan test`: pruebas de humo (`tests/Feature/BasicFlowTest.php`), con base de datos recreada por `RefreshDatabase`.
+- `phpstan.neon` configura el análisis estático en nivel 5 sobre `app/` y `tests/`. PHPStan no está entre las dependencias; para activarlo: `composer require --dev phpstan/phpstan phpstan/phpstan-phpunit` y luego `vendor/bin/phpstan analyze`.
+- `.github/workflows/laravel-ci.yml`: PHP 8.2, MySQL de servicio, build de Vite, PHPStan solo si está instalado, y PHPUnit en cada push a `main` o `develop`.
 
 ---
 

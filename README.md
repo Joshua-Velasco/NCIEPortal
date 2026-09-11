@@ -101,9 +101,9 @@ tests/          Pruebas de humo (PHPUnit)
 
 ## Calidad
 
-- `php artisan test` ejecuta las pruebas de PHPUnit.
-- `vendor/bin/phpstan analyze` corre el análisis estático en nivel 5.
-- GitHub Actions ejecuta ambos en cada push a `main` o `develop`.
+- `php artisan test` ejecuta las pruebas de humo de PHPUnit (`tests/Feature/BasicFlowTest.php`).
+- `phpstan.neon` deja lista la configuración de análisis estático en nivel 5; PHPStan no forma parte de las dependencias, así que el paso de CI se omite hasta instalarlo con `composer require --dev phpstan/phpstan phpstan/phpstan-phpunit`.
+- GitHub Actions instala dependencias, compila los assets y ejecuta las pruebas en cada push a `main` o `develop`.
 
 ## Créditos
 

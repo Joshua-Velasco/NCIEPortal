@@ -47,8 +47,13 @@ jobs:
         npm install
         npm run build
 
-    - name: Run PHPStan
-      run: ./vendor/bin/phpstan analyze
+    - name: Run PHPStan (si está instalado)
+      run: |
+        if [ -x vendor/bin/phpstan ]; then
+          vendor/bin/phpstan analyze
+        else
+          echo "PHPStan no está en composer.json; se omite el análisis estático."
+        fi
 
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
