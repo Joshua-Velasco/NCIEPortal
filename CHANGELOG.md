@@ -2,6 +2,17 @@
 
 Todos los cambios relevantes del Sistema NCIE. El formato sigue [Keep a Changelog](https://keepachangelog.com/es/1.1.0/) y el versionado es [SemVer](https://semver.org/lang/es/): mayor.menor.corrección.
 
+## [2.0.0] - 2026-09-11
+
+Versión final del ciclo de desarrollo 2026.
+
+### Añadido
+- `composer.json` declara la versión del proyecto.
+- README con la versión final y enlaces a toda la documentación.
+
+### Cambiado
+- Cierre del historial de versiones.
+
 ## [1.9.1] - 2026-09-11
 
 ### Añadido
@@ -140,6 +151,7 @@ Todos los cambios relevantes del Sistema NCIE. El formato sigue [Keep a Changelo
 ### Añadido
 - Base del sistema: Laravel 10 con laravel/ui y Spatie Permission, panel sobre AdminLTE 3, landing sobre Medilab, integración continua con PHPStan y PHPUnit.
 
+[2.0.0]: https://github.com/Joshua-Velasco/NCIEPortal/compare/v1.9.1...v2.0.0
 [1.9.1]: https://github.com/Joshua-Velasco/NCIEPortal/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/Joshua-Velasco/NCIEPortal/compare/v1.8.1...v1.9.0
 [1.8.1]: https://github.com/Joshua-Velasco/NCIEPortal/compare/v1.8.0...v1.8.1

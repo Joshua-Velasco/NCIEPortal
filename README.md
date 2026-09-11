@@ -2,7 +2,7 @@
 
 Plataforma web del **Nodo de Creatividad, Innovación y Emprendimiento (NCIE)** del Instituto Tecnológico de Ciudad Juárez (TecNM). Reúne un sitio público para la comunidad y un panel interno para administrar el nodo: personas, áreas, horarios de atención, cursos con calendario e inscripciones, proyectos, presupuestos y avisos.
 
-**Versión:** 1.8.1 · **Stack:** Laravel 10, PHP 8.2, PostgreSQL 16, Docker · **Idioma:** español
+**Versión:** 2.0.0 · **Stack:** Laravel 10, PHP 8.2, PostgreSQL 16, Docker · **Idioma:** español
 
 ---
 
