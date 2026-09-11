@@ -208,6 +208,6 @@ No hay SQL crudo en `app/`; todo es Eloquent y las migraciones corren sin cambio
 
 ## 11. Seguridad
 
-- `.env`, `.env.*.backup`, `manuales/`, `Bitacoras/` y `SKILL.md` están en `.gitignore`.
+- `.env`, `.env.*.backup`, `SKILL.md` y los `.docx` de `Historial/manuales/` están en `.gitignore`. `Historial/` conserva las bitácoras de avance y los manuales en PDF.
 - Las contraseñas del hosting anterior y de la cuenta de Gmail que existieron en versiones previas de este documento deben considerarse comprometidas y rotarse.
 - Toda ruta del panel exige `auth`, `verified` y su permiso; el registro público solo otorga el rol `usuario`.

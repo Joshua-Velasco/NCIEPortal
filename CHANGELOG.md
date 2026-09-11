@@ -2,6 +2,14 @@
 
 Todos los cambios relevantes del Sistema NCIE. El formato sigue [Keep a Changelog](https://keepachangelog.com/es/1.1.0/) y el versionado es [SemVer](https://semver.org/lang/es/): mayor.menor.corrección.
 
+## [2.1.0] - 2026-09-11
+
+### Añadido
+- Carpeta `deploy/` para poner el sistema en marcha en un servidor Linux nuevo: `deploy.sh` (instalación idempotente, `--update`, `--check`, `--fresh`, HTTPS automático con `--domain`), `ncie.sh` (arranque, registros, `artisan`, respaldo y restauración), `docker-compose.prod.yml` (contraseña de PostgreSQL desde `.env`, base de datos sin puerto expuesto, healthchecks, Caddy opcional), `nginx.conf` y `php.ini` de producción, `rsync-exclude.txt` y guía `deploy/README.md`.
+
+### Cambiado
+- `TrustProxies` confía en las cabeceras `X-Forwarded-*` del proxy interno para generar enlaces `https://` correctos detrás de Caddy.
+
 ## [2.0.0] - 2026-09-11
 
 Versión final del ciclo de desarrollo 2026.

@@ -92,6 +92,7 @@ app/            Controladores, modelos, eventos, listeners, notificaciones y cor
 config/ncie.php Interruptores propios del sistema (verificación de correo)
 database/       Migraciones y seeders (RoleSeeder, DatabaseSeeder, DemoSeeder)
 docker/         Dockerfile de PHP-FPM y configuración de NGINX
+Historial/      Bitácoras de avance del proyecto y manuales (Manual Técnico, Bitácora de Pruebas, Requerimientos de Despliegue) en PDF
 public/assets/  Sitio público (ncie.css, iconos, imágenes, galería)
 public/dist/    AdminLTE 3 y tema del panel (ncie-admin.css)
 resources/views/ Vistas Blade: index (landing), auth/, layouts/, admin/, post/, inscripciones/, reportes/

@@ -1,0 +1,31 @@
+# Sistema NCIE · exclusiones al copiar el proyecto al servidor con rsync:
+#   rsync -avz --delete --exclude-from=deploy/rsync-exclude.txt ./ usuario@servidor:/opt/ncie/
+.git
+.DS_Store
+._*
+node_modules
+vendor
+public/build
+public/hot
+public/storage
+.env
+.env.backup
+.env.*.backup
+.env.xampp.backup
+storage/logs/*.log
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/testing/*
+bootstrap/cache/*.php
+.phpunit.result.cache
+.phpunit.cache
+.idea
+.vscode
+.fleet
+manuales
+Bitacoras
+SKILL.md
+default1.php
+deploy/logs
+deploy/backups

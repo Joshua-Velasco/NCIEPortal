@@ -1,0 +1,10 @@
+# Sistema NCIE · Caddy como proxy con HTTPS automático (perfil "tls")
+# NCIE_DOMAIN y NCIE_ACME_EMAIL vienen del .env a través de docker-compose.prod.yml
+{
+	email {$NCIE_ACME_EMAIL}
+}
+
+{$NCIE_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy nginx:80
+}

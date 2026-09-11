@@ -1,0 +1,108 @@
+# ==============================================================================
+#  Sistema NCIE · Docker Compose de PRODUCCIÓN
+#
+#  No se usa a mano: lo invocan deploy/deploy.sh y deploy/ncie.sh con
+#      --project-directory <raíz del proyecto>  --env-file <raíz>/.env
+#  por lo que todas las rutas de este archivo son relativas a la raíz.
+#
+#  Diferencias con el docker-compose.yml de desarrollo:
+#    - la contraseña de PostgreSQL sale de DB_PASSWORD del .env (no va escrita aquí)
+#    - la base de datos NO publica el puerto 5432 al exterior
+#    - NGINX publica el puerto NCIE_HTTP_PORT (80 por defecto) en NCIE_HTTP_BIND
+#    - ajustes de PHP y NGINX para producción (deploy/php.ini, deploy/nginx.conf)
+#    - healthchecks en app y nginx, y restart: always
+#    - perfil "tls": Caddy delante de NGINX con certificados automáticos (Let's Encrypt)
+# ==============================================================================
+name: ncie
+
+services:
+  # PHP-FPM con la aplicación Laravel
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: always
+    environment:
+      COMPOSER_ALLOW_SUPERUSER: "1"
+    volumes:
+      - ./:/var/www/html
+      - ./deploy/php.ini:/usr/local/etc/php/conf.d/zz-ncie.ini:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@fsockopen('127.0.0.1', 9000) ? 0 : 1);"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Servidor web
+  nginx:
+    image: nginx:1.27-alpine
+    restart: always
+    ports:
+      - "${NCIE_HTTP_BIND:-0.0.0.0}:${NCIE_HTTP_PORT:-80}:80"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      app:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/robots.txt || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # Base de datos PostgreSQL (solo accesible desde la red interna de Docker)
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-ncie}
+      POSTGRES_USER: ${DB_USERNAME:-ncie}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD en .env}
+      # Collation en español (ICU) para que ORDER BY con acentos y ñ se comporte como en MySQL
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale-provider=icu --icu-locale=es-MX"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-ncie} -d ${DB_DATABASE:-ncie}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Node solo para compilar los assets de Vite (perfil "assets", bajo demanda)
+  node:
+    image: node:20-alpine
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    profiles: ["assets"]
+    command: sh -c "(npm ci --no-audit --no-fund || npm install --no-audit --no-fund) && npm run build"
+
+  # HTTPS automático (perfil "tls", solo cuando hay dominio público)
+  caddy:
+    image: caddy:2-alpine
+    restart: always
+    profiles: ["tls"]
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      NCIE_DOMAIN: ${NCIE_DOMAIN:-}
+      NCIE_ACME_EMAIL: ${NCIE_ACME_EMAIL:-}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - nginx
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:

@@ -10,9 +10,13 @@ class TrustProxies extends Middleware
     /**
      * The trusted proxies for this application.
      *
+     * La aplicación solo recibe tráfico a través de NGINX (y de Caddy cuando hay
+     * HTTPS), ambos dentro de la red de Docker, por lo que se confía en las
+     * cabeceras X-Forwarded-* de cualquier proxy para detectar https y el host.
+     *
      * @var array<int, string>|string|null
      */
-    protected $proxies;
+    protected $proxies = '*';
 
     /**
      * The headers that should be used to detect proxies.

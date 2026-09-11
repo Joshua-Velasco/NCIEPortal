@@ -26,9 +26,9 @@ yarn-error.log
 /default1.php
 
 # Documentos internos que no se publican
-/manuales
-/Bitacoras
 /SKILL.md
+# Historial: se publican las bitácoras y los manuales en PDF; los .docx de manuales no
+/Historial/manuales/*.docx
 
 # Archivos subidos por usuarios (DemoSeeder copia las fotos de demostración)
 /public/uploads/fotos/*
