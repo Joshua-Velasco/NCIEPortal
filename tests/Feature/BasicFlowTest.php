@@ -7,6 +7,8 @@ use Tests\TestCase;
 
 class BasicFlowTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test that the home page loads correctly.
      */

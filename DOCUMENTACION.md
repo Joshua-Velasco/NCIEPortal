@@ -40,6 +40,10 @@ docker compose --profile assets run --rm node         # assets de Vite (solo lay
 docker compose exec app chmod -R ug+rw storage bootstrap/cache public/uploads
 ```
 
+### Despliegue en un servidor
+
+Para un servidor Linux nuevo no se usan los pasos anteriores sino el paquete `deploy/`: copiar el proyecto con `rsync --exclude-from=deploy/rsync-exclude.txt` y ejecutar `sudo bash deploy/deploy.sh --url http://IP` (o `--domain dominio --email correo` para HTTPS automático). El script instala Docker si falta, crea el `.env` de producción, construye, migra, siembra, compila assets, ajusta permisos y verifica que el sitio responda. La operación diaria (registros, `artisan`, respaldos, actualización) se hace con `deploy/ncie.sh`. Guía completa en [deploy/README.md](deploy/README.md).
+
 ### Comandos útiles
 
 ```bash
@@ -181,7 +185,7 @@ Frontend estático: AdminLTE 3 y su bundle de plugins en `public/dist` y `public
 
 ## 9. Calidad
 
-- `docker compose exec app php artisan test`: pruebas de humo (`tests/Feature/BasicFlowTest.php`), con base de datos recreada por `RefreshDatabase`.
+- `docker compose exec app php artisan test`: pruebas de humo (`tests/Feature/BasicFlowTest.php`). `phpunit.xml` usa SQLite en memoria, así que las pruebas nunca tocan la base de datos de trabajo; en CI se ejecutan contra MySQL.
 - `phpstan.neon` configura el análisis estático en nivel 5 sobre `app/` y `tests/`. PHPStan no está entre las dependencias; para activarlo: `composer require --dev phpstan/phpstan phpstan/phpstan-phpunit` y luego `vendor/bin/phpstan analyze`.
 - `.github/workflows/laravel-ci.yml`: PHP 8.2, MySQL de servicio, build de Vite, PHPStan solo si está instalado, y PHPUnit en cada push a `main` o `develop`.
 
